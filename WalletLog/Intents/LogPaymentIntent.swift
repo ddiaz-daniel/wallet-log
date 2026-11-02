@@ -34,7 +34,7 @@ struct LogPaymentIntent: AppIntent {
             amount: parsed.amount,
             currency: currency,
             card: card?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "",
-            category: .other,
+            category: Categorizer.category(for: merchantName, context: Store.container.mainContext),
             coordinate: location?.coordinate,
             address: address
         )

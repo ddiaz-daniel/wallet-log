@@ -71,17 +71,28 @@ struct ExpenseEditView: View {
     }
 
     private func save() {
+        let isNew = expense == nil
+        let previous = expense?.category
+        let name = merchant.trimmingCharacters(in: .whitespaces)
+        var chosen = category
+        if isNew && chosen == .other {
+            chosen = Categorizer.category(for: name, context: context)
+        }
         let target = expense ?? {
             let new = Expense(merchant: "", amount: 0)
             context.insert(new)
             return new
         }()
-        target.merchant = merchant.trimmingCharacters(in: .whitespaces)
+        target.merchant = name
         target.amount = amount
         target.date = date
-        target.category = category
+        target.category = chosen
         target.card = card
         target.note = note
+        let userChose = isNew ? category != .other : chosen != previous
+        if userChose {
+            Categorizer.learn(merchant: name, category: chosen, context: context)
+        }
         dismiss()
     }
 }

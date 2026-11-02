@@ -4,7 +4,7 @@ import SwiftData
 enum Store {
     static let container: ModelContainer = {
         do {
-            return try ModelContainer(for: Expense.self)
+            return try ModelContainer(for: Expense.self, MerchantRule.self)
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
