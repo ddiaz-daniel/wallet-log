@@ -21,6 +21,9 @@ struct ContentView: View {
             SummaryView()
                 .tabItem { Label("Summary", systemImage: "chart.pie") }
                 .tag(1)
+            ExpenseMapView()
+                .tabItem { Label("Map", systemImage: "map") }
+                .tag(2)
         }
         .onAppear {
             LocationService.shared.requestPermission()
