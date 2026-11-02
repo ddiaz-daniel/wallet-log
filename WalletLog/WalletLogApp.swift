@@ -11,11 +11,22 @@ struct WalletLogApp: App {
 }
 
 struct ContentView: View {
+    @AppStorage("selectedTab") private var selectedTab = 0
+
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             ExpenseListView()
                 .tabItem { Label("Expenses", systemImage: "list.bullet") }
+                .tag(0)
+            SummaryView()
+                .tabItem { Label("Summary", systemImage: "chart.pie") }
+                .tag(1)
         }
-        .onAppear { LocationService.shared.requestPermission() }
+        .onAppear {
+            LocationService.shared.requestPermission()
+            #if DEBUG
+            SampleData.seedIfRequested()
+            #endif
+        }
     }
 }
