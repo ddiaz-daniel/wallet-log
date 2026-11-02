@@ -16,5 +16,6 @@ struct ContentView: View {
             ExpenseListView()
                 .tabItem { Label("Expenses", systemImage: "list.bullet") }
         }
+        .onAppear { LocationService.shared.requestPermission() }
     }
 }
