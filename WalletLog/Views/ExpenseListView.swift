@@ -7,6 +7,7 @@ struct ExpenseListView: View {
     @State private var search = ""
     @State private var editing: Expense?
     @State private var adding = false
+    @State private var showingSetup = false
 
     private var filtered: [Expense] {
         guard !search.isEmpty else { return expenses }
@@ -57,8 +58,14 @@ struct ExpenseListView: View {
             .searchable(text: $search)
             .navigationTitle("Expenses")
             .toolbar {
-                Button { adding = true } label: { Image(systemName: "plus") }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button { showingSetup = true } label: { Image(systemName: "questionmark.circle") }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button { adding = true } label: { Image(systemName: "plus") }
+                }
             }
+            .sheet(isPresented: $showingSetup) { SetupView() }
             .sheet(item: $editing) { ExpenseEditView(expense: $0) }
             .sheet(isPresented: $adding) { ExpenseEditView(expense: nil) }
         }
